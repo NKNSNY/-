@@ -1,4 +1,4 @@
-int seed;
+int seed = 100;
 
 float RandomCreate(float2 texcoord , int seed)
 {

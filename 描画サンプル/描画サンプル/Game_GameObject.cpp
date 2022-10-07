@@ -1,6 +1,17 @@
+//*=============================================================================
+ // \Filename : Game_GameObject.cpp
+ // \Description : ç°âÒÇÕàÍÇ¬ÇæÇØï\é¶Ç∑ÇÈ
+ // \Copyright (C) Silicon Studio Co., Ltd. All rights reserved.
+//==============================================================================
 #include "Game_GameObject.h"
 #include "System_Shader.h"
 
+/**--------------------------------------------
+/// \description èâä˙âª
+///
+///
+///  \return
+//--------------------------------------------*/
 bool GameObject::Initialize()
 {
     float vp = 0.5f;
@@ -39,18 +50,26 @@ bool GameObject::Initialize()
         { -vp, -vp, -vp, },
         { -vp,  vp, -vp,  },
 
-        {  vp,  vp, -vp,  },  // è„
+        {  -vp,  vp, vp,  },  // è„
         {  vp,  vp,  vp, },
-        { -vp,  vp,  vp,  },
+        { vp,  vp,  -vp,  },
 
-        { -vp,  vp,  vp,  },
+        { vp,  vp,  -vp,  },
         { -vp,  vp, -vp, },
-        {  vp,  vp, -vp,  },
+        {  -vp,  vp, vp,  },
+
+          {  -vp,  -vp, vp,  },  // â∫
+        {  vp,  -vp,  vp, },
+        { vp,  -vp,  -vp,  },
+
+        { vp,  -vp,  -vp,  },
+        { -vp,  -vp, -vp, },
+        {  -vp,  -vp, vp,  },
 
     };
 
 
-    for (int i = 0; i < 30; i++)
+    for (int i = 0; i < 36; i++)
     {
         m_vertexlist [i] = vertexlist [i];
     }
@@ -58,11 +77,34 @@ bool GameObject::Initialize()
     return true;
 }
 
+/**--------------------------------------------
+/// \description çXêV
+///
+///
+///  \return
+//--------------------------------------------*/
 bool GameObject::Update()
 {
+ 
+    for (int i = 0; i < 6; i++)
+    {
+        m_vertexlist [i].z -= 0.001f;
+        m_vertexlist [i + 6].z += 0.001f;
+        m_vertexlist [i + 12].x += 0.001f;
+        m_vertexlist [i + 18].x -= 0.001f;
+        m_vertexlist [i + 24].y += 0.001f;
+        m_vertexlist [i + 30].y -= 0.001f;
+    }
+ 
     return false;
 }
 
+/**--------------------------------------------
+/// \description ï`âÊ
+///
+///
+///  \return
+//--------------------------------------------*/
 bool GameObject::Draw()
 {
     Shader::Draw(m_vertexlist);
@@ -70,6 +112,12 @@ bool GameObject::Draw()
     return true;
 }
 
+/**--------------------------------------------
+/// \description âï˙
+///
+///
+///  \return
+//--------------------------------------------*/
 bool GameObject::Finalize()
 {
     return false;

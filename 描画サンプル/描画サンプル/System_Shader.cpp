@@ -76,9 +76,9 @@ bool Shader::Draw(DirectX::XMFLOAT3 vertexlist [])
 {
     //DirectX::XMFLOAT3 vertexpos [3] = { {0.0f,0.0f,0.0f},{1.0f,-1.0f,0.0f},{-1.0f,-1.0f,0.0f} };
     //DirectX::XMFLOAT3 vertexpos [4] = { {-0.5f,-0.5f,0.0f},{-0.5f,0.5f,0.0f},{0.5f,-0.5f,0.0f},{0.5f,0.5f,0.0f} };
-    DirectX::XMFLOAT3 vertexpos [30];
+    DirectX::XMFLOAT3 vertexpos [36];
 
-    for (int i = 0; i < 30; i++)
+    for (int i = 0; i < 36; i++)
     {
         vertexpos [i] = vertexlist [i];
     }
@@ -122,7 +122,7 @@ bool Shader::Draw(DirectX::XMFLOAT3 vertexlist [])
     }
 
 
-    DirectX::XMMATRIX worldmatrix = DirectX::XMMatrixTranslation(0.0f , 0.0f , 2.0f);
+    DirectX::XMMATRIX worldmatrix = DirectX::XMMatrixTranslation(0.0f , 0.0f , 0.0f);
 
     DirectX::XMVECTOR eye = { 2.0f,2.0f,-2.0f,0.0f };
     DirectX::XMVECTOR focus = { 0.0f,0.0f,0.0f,0.0f };
@@ -167,7 +167,7 @@ bool Shader::Draw(DirectX::XMFLOAT3 vertexlist [])
     // ビューポートをセット
     DirectX3D::GetDeviceContext()->RSSetViewports(1 , &m_viewport);
 
-    DirectX3D::GetDeviceContext()->Draw(30, 0);
+    DirectX3D::GetDeviceContext()->Draw(36, 0);
 
 
     return true;
