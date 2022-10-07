@@ -20,10 +20,13 @@ public:
 
     // public な変数
 
-    DirectX::XMFLOAT3 m_vertexlist [];
+    DirectX::XMFLOAT3 m_vertexlist [36];
+    int change_num;
+    bool y_change_flg;
 
     //---------------------------------------------------------------------------
     ///<
     /// m_vertexrist 頂点座標を入れるもの
+    /// change_num    eyeの場所を変えるフラグ
     /// <
 };

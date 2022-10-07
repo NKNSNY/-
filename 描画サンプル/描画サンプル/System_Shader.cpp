@@ -12,6 +12,8 @@ ID3D11PixelShader * Shader::ps_m_pixelshader;
 ID3D11InputLayout * Shader::ps_m_inputlayout;
 D3D11_VIEWPORT Shader::m_viewport;
 
+DirectX::XMFLOAT3 Shader::m_eyepostion;
+
 struct ConstBuffer
 {
     DirectX::XMFLOAT4X4 world;
@@ -59,6 +61,8 @@ bool Shader::Initialize()
     m_viewport.Height = 500;
     m_viewport.MinDepth = 0.0f;
     m_viewport.MaxDepth = 1.0f;
+
+    m_eyepostion = { 2.0f,2.0f,-2.0f };
 
     return true;
 }
@@ -124,7 +128,7 @@ bool Shader::Draw(DirectX::XMFLOAT3 vertexlist [])
 
     DirectX::XMMATRIX worldmatrix = DirectX::XMMatrixTranslation(0.0f , 0.0f , 0.0f);
 
-    DirectX::XMVECTOR eye = { 2.0f,2.0f,-2.0f,0.0f };
+    DirectX::XMVECTOR eye = { m_eyepostion.x,m_eyepostion.y,m_eyepostion.z,0.0f };
     DirectX::XMVECTOR focus = { 0.0f,0.0f,0.0f,0.0f };
     DirectX::XMVECTOR up { 0.0f,1.0f,0.0f,0.0f };
     DirectX::XMMATRIX viewmatrix = DirectX::XMMatrixLookAtLH(eye , focus , up);

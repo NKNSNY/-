@@ -15,6 +15,10 @@ public:
     static bool Initialize();
     static bool Draw(DirectX::XMFLOAT3 vertexlist []);
 
+    // publicな変数
+
+    static DirectX::XMFLOAT3 m_eyepostion;
+
 //---------------------------------------------------------------------------
 
 private:
@@ -31,6 +35,8 @@ private:
     /// ps_m_vertexshader       頂点シェーダー
     /// ps_m_pixelshader          ピクセルシェーダー
     /// ps_m_inputlayout          頂点レイアウト
+    /// m_viewport                  ビューポート
+    /// m_eyeposition              見る場所を変える
     ///<
 
 };

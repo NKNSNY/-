@@ -26,13 +26,14 @@ bool GameObject::Initialize()
         { -vp, -vp, -vp, },
         { -vp,  vp, -vp,  },
 
-        { -vp,  vp,  vp,  },  // ó†
-        {  vp,  vp,  vp,  },
-        {  vp, -vp,  vp,  },
+        { vp,  vp,  vp,  },  // ó†
+        {  -vp,  vp,  vp,  },
+        {  -vp, -vp,  vp,  },
 
-        {  vp, -vp,  vp,  },
-        { -vp, -vp,  vp,  },
-        { -vp,  vp,  vp,  },
+        {  -vp, -vp,  vp,  },
+        { vp, -vp,  vp,  },
+        { vp,  vp,  vp,  },
+
 
         {  vp,  vp, -vp, },  // âE
         {  vp,  vp,  vp,  },
@@ -42,13 +43,13 @@ bool GameObject::Initialize()
         {  vp, -vp, -vp,  },
         {  vp,  vp, -vp, },
 
-        { -vp,  vp, -vp,  },  // ç∂
-        { -vp,  vp,  vp, },
-        { -vp, -vp,  vp,  },
+        { -vp,  vp, vp,  },  // ç∂
+        { -vp,  vp,  -vp, },
+        { -vp, -vp,  -vp,  },
 
-        { -vp, -vp,  vp,  },
-        { -vp, -vp, -vp, },
-        { -vp,  vp, -vp,  },
+        { -vp, -vp,  -vp,  },
+        { -vp, -vp, vp, },
+        { -vp,  vp, vp,  },
 
         {  -vp,  vp, vp,  },  // è„
         {  vp,  vp,  vp, },
@@ -58,13 +59,13 @@ bool GameObject::Initialize()
         { -vp,  vp, -vp, },
         {  -vp,  vp, vp,  },
 
-          {  -vp,  -vp, vp,  },  // â∫
-        {  vp,  -vp,  vp, },
-        { vp,  -vp,  -vp,  },
+          {  -vp,  -vp, -vp,  },  // â∫
+        {  vp,  -vp,  -vp, },
+        { vp,  -vp,  vp,  },
 
-        { vp,  -vp,  -vp,  },
-        { -vp,  -vp, -vp, },
-        {  -vp,  -vp, vp,  },
+        { vp,  -vp,  vp,  },
+        { -vp,  -vp, vp, },
+        {  -vp,  -vp, -vp,  },
 
     };
 
@@ -73,6 +74,9 @@ bool GameObject::Initialize()
     {
         m_vertexlist [i] = vertexlist [i];
     }
+
+    change_num = 0;
+    y_change_flg = true;
 
     return true;
 }
@@ -85,17 +89,63 @@ bool GameObject::Initialize()
 //--------------------------------------------*/
 bool GameObject::Update()
 {
- 
-    for (int i = 0; i < 6; i++)
+
+    if (Shader::m_eyepostion.x <= 10.0f && change_num == 0)
     {
-        m_vertexlist [i].z -= 0.001f;
-        m_vertexlist [i + 6].z += 0.001f;
-        m_vertexlist [i + 12].x += 0.001f;
-        m_vertexlist [i + 18].x -= 0.001f;
-        m_vertexlist [i + 24].y += 0.001f;
-        m_vertexlist [i + 30].y -= 0.001f;
+        Shader::m_eyepostion.x += 0.1f;
+        if (Shader::m_eyepostion.x >= 10.0f)
+        {
+            Shader::m_eyepostion.x = 10.0f;
+            change_num = 1;
+        }
     }
- 
+    if (Shader::m_eyepostion.z <= 10.0f && change_num == 1)
+    {
+        Shader::m_eyepostion.z += 0.1f;
+        if (Shader::m_eyepostion.z >= 10.0f)
+        {
+            Shader::m_eyepostion.z = 10.0f;
+            change_num = 2;
+        }
+    }
+    if (Shader::m_eyepostion.x >= -10.0f && change_num == 2)
+    {
+        Shader::m_eyepostion.x -= 0.1f;
+        if (Shader::m_eyepostion.x <= -10.0f)
+        {
+            Shader::m_eyepostion.x = -10.0f;
+            change_num = 3;
+        }
+    }
+    if (Shader::m_eyepostion.z >= -10.0f && change_num == 3)
+    {
+        Shader::m_eyepostion.z -= 0.1f;
+        if (Shader::m_eyepostion.z <= -10.0f)
+        {
+            Shader::m_eyepostion.z = -10.0f;
+            change_num = 0;
+        }
+    }
+
+    if (y_change_flg)
+    {
+        Shader::m_eyepostion.y += 0.1f;
+        if (Shader::m_eyepostion.y >= 6.0f)
+        {
+            Shader::m_eyepostion.y = 6.0f;
+            y_change_flg = false;
+        }
+    }
+    else
+    {
+        Shader::m_eyepostion.y -= 0.1f;
+        if (Shader::m_eyepostion.y <= -6.0f)
+        {
+            Shader::m_eyepostion.y = -6.0f;
+            y_change_flg = true;
+        }
+    }
+
     return false;
 }
 
