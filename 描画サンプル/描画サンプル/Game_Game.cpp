@@ -22,7 +22,7 @@ bool Game::Initialize()
 
     Shader::Initialize();
 
-    return false;
+    return true;
 }
 
 /**-------------------------------------------- 
@@ -38,7 +38,7 @@ bool Game::Update()
 
     gameobject.Update();
 
-    return false;
+    return true;
 }
 
 /**-------------------------------------------- 
@@ -53,7 +53,7 @@ bool Game::Draw()
 
     DirectX3D::GetSwapChain()->Present(1 , 0);
 
-    return false;
+    return true;
 }
 
 /**-------------------------------------------- 
@@ -64,5 +64,9 @@ bool Game::Draw()
 //--------------------------------------------*/
 bool Game::Finalize()
 {
-    return false;
+    gameobject.Finalize();
+
+    Shader::Finalize();
+
+    return true;
 }

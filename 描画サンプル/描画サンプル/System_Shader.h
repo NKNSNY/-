@@ -14,6 +14,7 @@ public:
 
     static bool Initialize();
     static bool Draw(DirectX::XMFLOAT3 vertexlist []);
+    static bool Finalize();
 
     // public‚È•Ï”
 

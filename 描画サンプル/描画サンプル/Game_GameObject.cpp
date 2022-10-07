@@ -170,5 +170,5 @@ bool GameObject::Draw()
 //--------------------------------------------*/
 bool GameObject::Finalize()
 {
-    return false;
+    return true;
 }

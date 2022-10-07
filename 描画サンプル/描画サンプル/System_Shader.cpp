@@ -173,6 +173,21 @@ bool Shader::Draw(DirectX::XMFLOAT3 vertexlist [])
 
     DirectX3D::GetDeviceContext()->Draw(36, 0);
 
-
     return true;
 }
+
+/**-------------------------------------------- 
+/// \description ‰ğ•ú
+///
+///
+///  \return
+//--------------------------------------------*/
+bool Shader::Finalize()
+{
+    ps_m_vertexshader->Release();
+    ps_m_pixelshader->Release();
+    ps_m_inputlayout->Release();
+
+    return true;;
+}
+
