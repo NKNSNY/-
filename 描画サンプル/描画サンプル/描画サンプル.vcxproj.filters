@@ -16,6 +16,9 @@
     <Filter Include="コーディング規約">
       <UniqueIdentifier>{709e2207-9433-4622-8a55-ea79f34964ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="exe">
+      <UniqueIdentifier>{cd098562-ae57-48f0-9b5e-ec36890ecdb2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -81,5 +84,10 @@
   <ItemGroup>
     <FxCompile Include="シェーダー\PS.hlsl" />
     <FxCompile Include="シェーダー\VS.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\x64\Release\描画サンプル.exe">
+      <Filter>exe</Filter>
+    </None>
   </ItemGroup>
 </Project>
