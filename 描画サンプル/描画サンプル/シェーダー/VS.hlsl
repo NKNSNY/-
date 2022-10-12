@@ -1,3 +1,9 @@
+/**=============================================================================
+ // \Filename : VS.hlsl
+ // \Description : 頂点シェーダー
+ // \Copyright (C) Silicon Studio Co., Ltd. All rights reserved.
+//============================================================================*/
+
 struct OUTPUT
 {
     float4 pos : SV_POSITION;

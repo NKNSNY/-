@@ -1,3 +1,8 @@
+/**=============================================================================
+ // \Filename : PS.hlsl
+ // \Description : ピクセルシェーダー
+ // \Copyright (C) Silicon Studio Co., Ltd. All rights reserved.
+//============================================================================*/
 int seed = 100;
 
 float RandomCreate(float2 texcoord , int seed)
