@@ -48,7 +48,7 @@
     <ClInclude Include="System_DX3D12.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="シェーダー\Game_DX3D12Gameobject.h">
+    <ClInclude Include="Game_DX3D12Gameobject.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -71,7 +71,7 @@
     <ClCompile Include="System_DX3D12.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="シェーダー\Game_DX3D12Gameobject.cpp">
+    <ClCompile Include="Game_DX3D12Gameobject.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -96,8 +96,7 @@
   <ItemGroup>
     <FxCompile Include="シェーダー\PS.hlsl" />
     <FxCompile Include="シェーダー\VS.hlsl" />
-    <FxCompile Include="シェーダー\DX12_PS.hlsl" />
-    <FxCompile Include="シェーダー\DX12_VS.hlsl" />
+    <FxCompile Include="シェーダー\P_V_Shader.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\x64\Release\描画サンプル.exe">

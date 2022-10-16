@@ -10,6 +10,7 @@
 #include "描画サンプル.h"
 #include "System_DirectX3D.h"
 #include "Game_Game.h"
+#include "System_DX3D12.h"
 
 #define MAX_LOADSTRING 100
 
@@ -49,7 +50,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance ,
 
     MSG msg;
 
-    Game::Initialize();
+    //Game::Initialize();
 
     // メイン メッセージ ループ:
     while (GetMessage(&msg , nullptr , 0 , 0))
@@ -62,12 +63,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance ,
 
         // ゲームループ
 
-        Game::Update();
-        Game::Draw();
+        DX3D12::Draw();
+
+        //Game::Update();
+       // Game::Draw();
 
     }
 
-    Game::Finalize();
+    DX3D12::Finalize();
+    //Game::Finalize();
 
     return (int) msg.wParam;
 }
@@ -122,7 +126,8 @@ BOOL InitInstance(HINSTANCE hInstance , int nCmdShow)
         return FALSE;
     }
 
-    DirectX3D::Initialize(hWnd , 1000 , 500);
+    //DirectX3D::Initialize(hWnd , 1000 , 500);
+    DX3D12::Initialize(hWnd , 1000 , 500);
 
     ShowWindow(hWnd , nCmdShow);
     UpdateWindow(hWnd);
