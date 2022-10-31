@@ -16,6 +16,7 @@
 #include <d3dcompiler.h>
 
 #include "Game_DX3D12Gameobject.h"
+#include "Game_QubeStatus.h" 
 
 
 struct Vertex
@@ -36,8 +37,11 @@ public:
     static ID3D12Device * GetDX3D12Device();
     static ID3D12GraphicsCommandList * GetDX3D12CommandList();
 
+    // セッター
+    static bool SetCamera(DirectX::XMFLOAT3 eye , DirectX::XMFLOAT3 focus);
+
     // 初期化
-    static bool Initialize(HWND hwnd , int screen_width , int screen_height);
+    static bool Initialize(HWND hwnd , int screen_width , int screen_height , int qube_num , QubeStatus qube []);
     // 描画
     static bool Draw();
     // 解放
@@ -80,6 +84,9 @@ private:
     static D3D12_RECT m_scissorrect;
     static D3D12_VIEWPORT m_viewport;
 
+    static DirectX::XMFLOAT3 sm_eyepos;
+    static DirectX::XMFLOAT3 sm_focuspos;
+
     //---------------------------------------------------------------------------
         ///<
         /// m_frame                                 フレーム
@@ -103,5 +110,7 @@ private:
         /// ps_m_rootsignature                      ルートシグネチャ
         /// m_scissorrect                           シザー矩形
         /// m_viewport                              ビューポート
+        /// sm_eyepos                               カメラの位置
+        /// sm_focuspos                             カメラの向き
         /// < 
 };

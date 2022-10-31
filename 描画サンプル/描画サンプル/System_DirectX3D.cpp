@@ -9,6 +9,8 @@ ID3D11Device * DirectX3D::ps_m_device;
 ID3D11DeviceContext * DirectX3D::ps_m_devicecontext;
 IDXGISwapChain * DirectX3D::ps_m_swapchain;
 ID3D11RenderTargetView * DirectX3D::ps_m_rendertargetview;
+ID3D11Texture2D * DirectX3D::ps_m_texture;
+ID3D11DepthStencilView * DirectX3D::ps_m_depthstencilview;
 
 ID3D11Device * DirectX3D::GetDevice()
 {
@@ -28,6 +30,11 @@ IDXGISwapChain * DirectX3D::GetSwapChain()
 ID3D11RenderTargetView * DirectX3D::GetRenderTarget()
 {
     return ps_m_rendertargetview;
+}
+
+ID3D11DepthStencilView * DirectX3D::GetDepthStenvilView()
+{
+    return ps_m_depthstencilview;
 }
 
 
@@ -107,8 +114,40 @@ bool DirectX3D::Initialize(HWND hwnd , int screen_width , int screen_height)
         return false;
     }
 
+    // 深度ステンシルバッファの設定
+    D3D11_TEXTURE2D_DESC texture_desc;
+
+    ZeroMemory(&texture_desc , sizeof(texture_desc));
+    texture_desc.Height = screen_height;
+    texture_desc.Width = screen_width;
+    texture_desc.MipLevels = 1;
+    texture_desc.ArraySize = 1;
+    texture_desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+    texture_desc.SampleDesc.Count = 1;
+    texture_desc.SampleDesc.Quality = 0;
+    texture_desc.Usage = D3D11_USAGE_DEFAULT;
+    texture_desc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+    texture_desc.CPUAccessFlags = 0;
+    texture_desc.MiscFlags = 0;
+
+    if (FAILED(ps_m_device->CreateTexture2D(&texture_desc , NULL , &ps_m_texture)))
+    {
+        return false;
+    }
+
+    D3D11_DEPTH_STENCIL_VIEW_DESC ds_desc;
+    ZeroMemory(&ds_desc , sizeof(ds_desc));
+    ds_desc.Format = texture_desc.Format;
+    ds_desc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+    ds_desc.Texture2D.MipSlice = 0;
+
+    if (FAILED(ps_m_device->CreateDepthStencilView(ps_m_texture , &ds_desc , &ps_m_depthstencilview)))
+    {
+        return false;
+    }
+
     // レンダリングターゲットの設定
-    ps_m_devicecontext->OMSetRenderTargets(1 , &ps_m_rendertargetview , nullptr);
+    ps_m_devicecontext->OMSetRenderTargets(1 , &ps_m_rendertargetview , ps_m_depthstencilview);
 
     // ビューポートの設定
     D3D11_VIEWPORT viewport = { 0,0,(float) screen_width,(float) screen_height,0.0f,1.0f };

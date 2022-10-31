@@ -5,78 +5,24 @@
 //==============================================================================
 #include "Game_GameObject.h"
 #include "System_Shader.h"
+#include "Game_Game.h"
 
-/**--------------------------------------------
+/**-------------------------------------------- 
 /// \description èâä˙âª
 ///
+/// \param[in] vertexlist
+/// \param[in] position
 ///
-///  \return
+///  \return true
 //--------------------------------------------*/
-bool GameObject::Initialize()
+bool GameObject::Initialize(DirectX::XMFLOAT3 vertexlist [] , DirectX::XMFLOAT3 position)
 {
-    float vp = 0.5f;
-
-    DirectX::XMFLOAT3 vertexlist [] =
-    {
-      { -vp,  vp, -vp,  },  // éËëO
-        {  vp,  vp, -vp,  },
-        {  vp, -vp, -vp,  },
-
-        {  vp, -vp, -vp,  },
-        { -vp, -vp, -vp, },
-        { -vp,  vp, -vp,  },
-
-        { vp,  vp,  vp,  },  // ó†
-        {  -vp,  vp,  vp,  },
-        {  -vp, -vp,  vp,  },
-
-        {  -vp, -vp,  vp,  },
-        { vp, -vp,  vp,  },
-        { vp,  vp,  vp,  },
-
-
-        {  vp,  vp, -vp, },  // âE
-        {  vp,  vp,  vp,  },
-        {  vp, -vp,  vp,  },
-
-        {  vp, -vp,  vp,  },
-        {  vp, -vp, -vp,  },
-        {  vp,  vp, -vp, },
-
-        { -vp,  vp, vp,  },  // ç∂
-        { -vp,  vp,  -vp, },
-        { -vp, -vp,  -vp,  },
-
-        { -vp, -vp,  -vp,  },
-        { -vp, -vp, vp, },
-        { -vp,  vp, vp,  },
-
-        {  -vp,  vp, vp,  },  // è„
-        {  vp,  vp,  vp, },
-        { vp,  vp,  -vp,  },
-
-        { vp,  vp,  -vp,  },
-        { -vp,  vp, -vp, },
-        {  -vp,  vp, vp,  },
-
-          {  -vp,  -vp, -vp,  },  // â∫
-        {  vp,  -vp,  -vp, },
-        { vp,  -vp,  vp,  },
-
-        { vp,  -vp,  vp,  },
-        { -vp,  -vp, vp, },
-        {  -vp,  -vp, -vp,  },
-
-    };
-
-
     for (int i = 0; i < 36; i++)
     {
         m_vertexlist [i] = vertexlist [i];
     }
 
-    change_num = 0;
-    y_change_flg = true;
+    m_position = position;
 
     return true;
 }
@@ -89,62 +35,8 @@ bool GameObject::Initialize()
 //--------------------------------------------*/
 bool GameObject::Update()
 {
+    //m_position.x += 0.1f;
 
-    if (Shader::m_eyepostion.x <= 10.0f && change_num == 0)
-    {
-        Shader::m_eyepostion.x += 0.1f;
-        if (Shader::m_eyepostion.x >= 10.0f)
-        {
-            Shader::m_eyepostion.x = 10.0f;
-            change_num = 1;
-        }
-    }
-    if (Shader::m_eyepostion.z <= 10.0f && change_num == 1)
-    {
-        Shader::m_eyepostion.z += 0.1f;
-        if (Shader::m_eyepostion.z >= 10.0f)
-        {
-            Shader::m_eyepostion.z = 10.0f;
-            change_num = 2;
-        }
-    }
-    if (Shader::m_eyepostion.x >= -10.0f && change_num == 2)
-    {
-        Shader::m_eyepostion.x -= 0.1f;
-        if (Shader::m_eyepostion.x <= -10.0f)
-        {
-            Shader::m_eyepostion.x = -10.0f;
-            change_num = 3;
-        }
-    }
-    if (Shader::m_eyepostion.z >= -10.0f && change_num == 3)
-    {
-        Shader::m_eyepostion.z -= 0.1f;
-        if (Shader::m_eyepostion.z <= -10.0f)
-        {
-            Shader::m_eyepostion.z = -10.0f;
-            change_num = 0;
-        }
-    }
-
-    if (y_change_flg)
-    {
-        Shader::m_eyepostion.y += 0.1f;
-        if (Shader::m_eyepostion.y >= 6.0f)
-        {
-            Shader::m_eyepostion.y = 6.0f;
-            y_change_flg = false;
-        }
-    }
-    else
-    {
-        Shader::m_eyepostion.y -= 0.1f;
-        if (Shader::m_eyepostion.y <= -6.0f)
-        {
-            Shader::m_eyepostion.y = -6.0f;
-            y_change_flg = true;
-        }
-    }
 
     return false;
 }
@@ -157,7 +49,7 @@ bool GameObject::Update()
 //--------------------------------------------*/
 bool GameObject::Draw()
 {
-    Shader::Draw(m_vertexlist);
+    Shader::Draw(m_vertexlist , m_position);
 
     return true;
 }

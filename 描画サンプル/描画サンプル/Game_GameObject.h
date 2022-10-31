@@ -13,20 +13,19 @@ public:
     //---------------------------------------------------------------------------
         // publicなメソッド
 
-    bool Initialize();
+    bool Initialize(DirectX::XMFLOAT3 vertexlist [] , DirectX::XMFLOAT3 position);
     bool Update();
     bool Draw();
     bool Finalize();
 
     // public な変数
 
+    DirectX::XMFLOAT3 m_position;
     DirectX::XMFLOAT3 m_vertexlist [36];
-    int change_num;
-    bool y_change_flg;
 
     //---------------------------------------------------------------------------
     ///<
-    /// m_vertexrist 頂点座標を入れるもの
-    /// change_num    eyeの場所を変えるフラグ
+    /// m_position          移動量
+    /// m_vertexlist        頂点データ
     /// <
 };

@@ -27,9 +27,12 @@ ID3D12RootSignature * DX3D12::ps_m_rootsignature;
 D3D12_RECT DX3D12::m_scissorrect;
 D3D12_VIEWPORT DX3D12::m_viewport;
 
+XMFLOAT3 DX3D12::sm_eyepos;
+XMFLOAT3 DX3D12::sm_focuspos;
 
-DX3D12GameObject g_gameobject;
+DX3D12GameObject g_gameobject [1000];
 
+int g_d3d12_qube_num;
 
 ID3D12Device * DX3D12::GetDX3D12Device()
 {
@@ -41,7 +44,15 @@ ID3D12GraphicsCommandList * DX3D12::GetDX3D12CommandList()
     return ps_m_commandlist;
 }
 
-/**-------------------------------------------- 
+bool DX3D12::SetCamera(DirectX::XMFLOAT3 eye , DirectX::XMFLOAT3 focus)
+{
+    sm_eyepos = eye;
+    sm_focuspos = focus;
+
+    return true;
+}
+
+/**--------------------------------------------
 /// \description ダイレクトX12の初期化
 ///
 /// \param[in] hwnd
@@ -50,7 +61,7 @@ ID3D12GraphicsCommandList * DX3D12::GetDX3D12CommandList()
 ///
 ///  \return true or false
 //--------------------------------------------*/
-bool DX3D12::Initialize(HWND hwnd , int screen_width , int screen_height)
+bool DX3D12::Initialize(HWND hwnd , int screen_width , int screen_height , int qube_num , QubeStatus qube [])
 {
     // ビューポート
     m_viewport.TopLeftX = 0.0f;
@@ -364,12 +375,17 @@ bool DX3D12::Initialize(HWND hwnd , int screen_width , int screen_height)
         return false;
     }
 
-    g_gameobject.Initialize();
+    g_d3d12_qube_num = qube_num;
+
+    for (int i = 0; i < g_d3d12_qube_num; i++)
+    {
+        g_gameobject [i].Initialize(qube [i]);
+    }
 
     return true;
 }
 
-/**-------------------------------------------- 
+/**--------------------------------------------
 /// \description 描画周り
 ///
 ///
@@ -402,7 +418,7 @@ bool DX3D12::Draw()
     return true;
 }
 
-/**-------------------------------------------- 
+/**--------------------------------------------
 /// \description ポインターの解放
 ///
 ///
@@ -429,7 +445,7 @@ bool DX3D12::Finalize()
     return true;
 }
 
-/**-------------------------------------------- 
+/**--------------------------------------------
 /// \description コマンドリストの設定
 ///
 ///
@@ -457,8 +473,11 @@ bool DX3D12::ConfiguringCommandLists()
     // レンダーターゲットの設定
     ps_m_commandlist->OMSetRenderTargets(1 , &m_rtvhandle [m_rtv_index] , TRUE , &m_dsvhandle);
 
-    g_gameobject.Update();
-    g_gameobject.Draw();
+    for (int i = 0; i < g_d3d12_qube_num; i++)
+    {
+        g_gameobject [i].Update();
+        g_gameobject [i].Draw(sm_eyepos , sm_focuspos);
+    }
 
     // リソースの状態を変更
     DX3D12::SetResourceBarrier(D3D12_RESOURCE_STATE_RENDER_TARGET , D3D12_RESOURCE_STATE_PRESENT);
@@ -468,7 +487,7 @@ bool DX3D12::ConfiguringCommandLists()
     return true;
 }
 
-/**-------------------------------------------- 
+/**--------------------------------------------
 /// \description リソースの状態を変更
 ///
 /// \param[in] before_state
@@ -491,7 +510,7 @@ bool DX3D12::SetResourceBarrier(D3D12_RESOURCE_STATES before_state , D3D12_RESOU
     return true;
 }
 
-/**-------------------------------------------- 
+/**--------------------------------------------
 /// \description 待つ
 ///
 ///

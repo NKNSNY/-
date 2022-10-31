@@ -13,6 +13,7 @@ ID3D11InputLayout * Shader::ps_m_inputlayout;
 D3D11_VIEWPORT Shader::m_viewport;
 
 DirectX::XMFLOAT3 Shader::m_eyepostion;
+DirectX::XMFLOAT3 Shader::m_focusposition;
 
 struct ConstBuffer
 {
@@ -20,6 +21,22 @@ struct ConstBuffer
     DirectX::XMFLOAT4X4 view;
     DirectX::XMFLOAT4X4 proj;
 };
+
+/**-------------------------------------------- 
+/// \description カメラをセット
+///
+/// \param[in] eye
+/// \param[in] focus
+///
+///  \return true
+//--------------------------------------------*/
+bool Shader::SetCamera(DirectX::XMFLOAT3 eye , DirectX::XMFLOAT3 focus)
+{
+    m_eyepostion = eye;
+    m_focusposition = focus;
+
+    return true;
+}
 
 /**--------------------------------------------
 /// \description 初期化
@@ -62,21 +79,18 @@ bool Shader::Initialize()
     m_viewport.MinDepth = 0.0f;
     m_viewport.MaxDepth = 1.0f;
 
-    m_eyepostion = { 2.0f,2.0f,-2.0f };
-
     return true;
 }
 
-
-
 /**--------------------------------------------
-/// \description 描画系
+/// \description 描画
 ///
 /// \param[in] vertexlist
+/// \param[in] position
 ///
-///  \return
+///  \return true or false
 //--------------------------------------------*/
-bool Shader::Draw(DirectX::XMFLOAT3 vertexlist [])
+bool Shader::Draw(DirectX::XMFLOAT3 vertexlist [] , DirectX::XMFLOAT3 position)
 {
     //DirectX::XMFLOAT3 vertexpos [3] = { {0.0f,0.0f,0.0f},{1.0f,-1.0f,0.0f},{-1.0f,-1.0f,0.0f} };
     //DirectX::XMFLOAT3 vertexpos [4] = { {-0.5f,-0.5f,0.0f},{-0.5f,0.5f,0.0f},{0.5f,-0.5f,0.0f},{0.5f,0.5f,0.0f} };
@@ -85,6 +99,9 @@ bool Shader::Draw(DirectX::XMFLOAT3 vertexlist [])
     for (int i = 0; i < 36; i++)
     {
         vertexpos [i] = vertexlist [i];
+        vertexpos [i].x += position.x;
+        vertexpos [i].y += position.y;
+        vertexpos [i].z += position.z;
     }
 
     // 頂点バッファ作成
@@ -129,7 +146,7 @@ bool Shader::Draw(DirectX::XMFLOAT3 vertexlist [])
     DirectX::XMMATRIX worldmatrix = DirectX::XMMatrixTranslation(0.0f , 0.0f , 0.0f);
 
     DirectX::XMVECTOR eye = { m_eyepostion.x,m_eyepostion.y,m_eyepostion.z,0.0f };
-    DirectX::XMVECTOR focus = { 0.0f,0.0f,0.0f,0.0f };
+    DirectX::XMVECTOR focus = { m_focusposition.x,m_focusposition.y,m_focusposition.z,0.0f };
     DirectX::XMVECTOR up { 0.0f,1.0f,0.0f,0.0f };
     DirectX::XMMATRIX viewmatrix = DirectX::XMMatrixLookAtLH(eye , focus , up);
     //DirectX::XMMATRIX viewmatrix = DirectX::XMMatrixIdentity();
@@ -171,12 +188,15 @@ bool Shader::Draw(DirectX::XMFLOAT3 vertexlist [])
     // ビューポートをセット
     DirectX3D::GetDeviceContext()->RSSetViewports(1 , &m_viewport);
 
-    DirectX3D::GetDeviceContext()->Draw(36, 0);
+    DirectX3D::GetDeviceContext()->Draw(36 , 0);
+
+    vb->Release();
+    cb->Release();
 
     return true;
 }
 
-/**-------------------------------------------- 
+/**--------------------------------------------
 /// \description 解放
 ///
 ///

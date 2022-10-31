@@ -13,7 +13,7 @@ using namespace DirectX;
 ///
 ///  \return true or false
 //--------------------------------------------*/
-bool DX3D12GameObject::Initialize()
+bool DX3D12GameObject::Initialize(QubeStatus qube)
 {
     // バッファ設定
     D3D12_HEAP_PROPERTIES heap_properties {};
@@ -53,85 +53,84 @@ bool DX3D12GameObject::Initialize()
     // 頂点データの書き込み
     Vertex * buffer {};
 
+    XMFLOAT3 vp = qube.size;
+
     if (FAILED(pm_vertexbuffer->Map(0 , nullptr , (void **) &buffer)))
     {
         return false;
     }
 
-    // ポジション
     // 手前
-    buffer [0].position = { -1.0f,1.0f,-1.0f };
-    buffer [1].position = { 1.0f,1.0f,-1.0f };
-    buffer [2].position = { -1.0f,-1.0f,-1.0f };
-    buffer [3].position = { 1.0f,-1.0f,-1.0f };
+    buffer [0].position = { -vp.x,   vp.y,  -vp.z };
+    buffer [1].position = { vp.x,   vp.y,  -vp.z };
+    buffer [2].position = { -vp.x, -vp.y,  -vp.z };
+    buffer [3].position = { vp.x,   vp.y,  -vp.z };
+    buffer [4].position = { vp.x, -vp.y,  -vp.z };
+    buffer [5].position = { -vp.x, -vp.y,  -vp.z };
+
     // 後ろ
-    buffer [4].position = { 1.0f,1.0f,1.0f };
-    buffer [5].position = { -1.0f,1.0f,1.0f };
-    buffer [6].position = { 1.0f,-1.0f,1.0f };
-    buffer [7].position = { -1.0f,-1.0f,1.0f };
+    buffer [6].position = { vp.x,   vp.y,   vp.z };
+    buffer [7].position = { -vp.x,   vp.y,   vp.z };
+    buffer [8].position = { vp.x, -vp.y,   vp.z };
+    buffer [9].position = { -vp.x,   vp.y,   vp.z };
+    buffer [10].position = { -vp.x, -vp.y,   vp.z };
+    buffer [11].position = { vp.x, -vp.y,   vp.z };
+
     // 右
-    buffer [8].position = { 1.0f,1.0f,-1.0f };
-    buffer [9].position = { 1.0f,1.0f,1.0f };
-    buffer [10].position = { 1.0f,-1.0f,-1.0f };
-    buffer [11].position = { 1.0f, -1.0f,1.0f };
+    buffer [12].position = { vp.x,   vp.y, -vp.z };
+    buffer [13].position = { vp.x,   vp.y,   vp.z };
+    buffer [14].position = { vp.x, -vp.y, -vp.z };
+    buffer [15].position = { vp.x,   vp.y,   vp.z };
+    buffer [16].position = { vp.x, -vp.y,   vp.z };
+    buffer [17].position = { vp.x, -vp.y, -vp.z };
+
     // 左
-    buffer [12].position = { -1.0f,1.0f,1.0f };
-    buffer [13].position = { -1.0f,1.0f,-1.0f };
-    buffer [14].position = { -1.0f,-1.0f,1.0f };
-    buffer [15].position = { -1.0f,-1.0f,-1.0f };
+    buffer [18].position = { -vp.x,   vp.y,   vp.z };
+    buffer [19].position = { -vp.x,   vp.y, -vp.z };
+    buffer [20].position = { -vp.x, -vp.y,   vp.z };
+    buffer [21].position = { -vp.x,   vp.y, -vp.z };
+    buffer [22].position = { -vp.x, -vp.y, -vp.z };
+    buffer [23].position = { -vp.x, -vp.y,   vp.z };
+
     // 上
-    buffer [16].position = { -1.0f,1.0f,1.0f };
-    buffer [17].position = { 1.0f,1.0f,1.0f };
-    buffer [18].position = { -1.0f,1.0f,-1.0f };
-    buffer [19].position = { 1.0f,1.0f,-1.0f };
+    buffer [24].position = { -vp.x,   vp.y,   vp.z };
+    buffer [25].position = { vp.x,   vp.y,   vp.z };
+    buffer [26].position = { -vp.x,   vp.y, -vp.z };
+    buffer [27].position = { vp.x,   vp.y,   vp.z };
+    buffer [28].position = { vp.x,   vp.y, -vp.z };
+    buffer [29].position = { -vp.x,   vp.y, -vp.z };
+
     // 下
-    buffer [20].position = { -1.0f,-1.0f,-1.0f };
-    buffer [21].position = { 1.0f, -1.0f,-1.0f, };
-    buffer [22].position = { -1.0f,-1.0f,1.0f };
-    buffer [23].position = { 1.0f,-1.0f,1.0f };
+    buffer [30].position = { -vp.x, -vp.y, -vp.z };
+    buffer [31].position = { vp.x, -vp.y, -vp.z };
+    buffer [32].position = { -vp.x, -vp.y,   vp.z };
+    buffer [33].position = { vp.x, -vp.y, -vp.z };
+    buffer [34].position = { vp.x, -vp.y,   vp.z };
+    buffer [35].position = { -vp.x, -vp.y,   vp.z };
 
     // 法線ベクトル
-    for (int i = 0; i < 24; i++)
+    // カラー
+    for (int i = 0; i < 36; i++)
     {
         buffer [i].normal = { 0.0f,0.0f,0.0f };
+        buffer [i].color = qube.color;
     }
 
-    // カラー
-    // 手前
-    buffer [0].color = { 1.0f,0.0f,0.0f,1.0f };
-    buffer [1].color = { 0.0f,1.0f,0.0f,1.0f };
-    buffer [2].color = { 0.0f,0.0f,1.0f,1.0f };
-    buffer [3].color = { 1.0f,1.0f,1.0f,1.0f };
-    // 後ろ
-    buffer [4].color = { 0.0f,1.0f,0.0f,1.0f };
-    buffer [5].color = { 0.0f,0.0f,1.0f,1.0f };
-    buffer [6].color = { 1.0f,1.0f,1.0f,1.0f };
-    buffer [7].color = { 1.0f,0.0f,0.0f,1.0f };
-    // 右
-    buffer [8].color = { 0.0f,0.0f,1.0f,1.0f };
-    buffer [9].color = { 1.0f,1.0f,1.0f,1.0f };
-    buffer [10].color = { 1.0f,0.0f,0.0f,1.0f };
-    buffer [11].color = { 0.0f,1.0f,0.0f,1.0f };
-    // 左
-    buffer [12].color = { 1.0f,1.0f,1.0f,1.0f };
-    buffer [13].color = { 1.0f,0.0f,0.0f,1.0f };
-    buffer [14].color = { 0.0f,1.0f,0.0f,1.0f };
-    buffer [15].color = { 0.0f,0.0f,1.0f,1.0f };
-
-    for (int i = 16; i < 24; i++)
+    for (int i = 0; i < 36; i++)
     {
-        buffer [i].color = { 1.0f,1.0f,1.0f,1.0f };
+        buffer [i].position.x += qube.position.x;
+        buffer [i].position.y += qube.position.y;
+        buffer [i].position.z += qube.position.z;
     }
 
     pm_vertexbuffer->Unmap(0 , nullptr);
-    buffer = nullptr;
 
-    m_eyepos = { 5.0f,10.0f,-5.0f };
+    buffer = nullptr;
 
     return true;
 }
 
-/**-------------------------------------------- 
+/**--------------------------------------------
 /// \description オブジェクトの更新
 ///
 ///
@@ -139,39 +138,6 @@ bool DX3D12GameObject::Initialize()
 //--------------------------------------------*/
 bool DX3D12GameObject::Update()
 {
-    Vertex * buffer {};
-
-    if (FAILED(pm_vertexbuffer->Map(0 , nullptr , (void **) &buffer)))
-    {
-        return false;
-    }
-
-    for (int i = 0; i < 24; i++)
-    {
-        if (buffer [i].color.x > 0.0f && buffer [i].color.z <= 0.0f)
-        {
-            buffer [i].color.x -= 0.01f;
-            buffer [i].color.y += 0.01f;
-        }
-        if (buffer [i].color.y > 0.0f && buffer [i].color.x <= 0.0f)
-        {
-            buffer [i].color.y -= 0.01f;
-            buffer [i].color.z += 0.01f;
-        }
-        if (buffer [i].color.z > 0.0f && buffer [i].color.y <= 0.0f)
-        {
-            buffer [i].color.z -= 0.01f;
-            buffer [i].color.x += 0.01f;
-        }
-
-        if (buffer [i].color.x == 1.0f && buffer [i].color.y == 1.0f && buffer [i].color.z == 1.0f)
-        {
-            buffer [i].color = { 0.5f,0.0f,0.5f,1.0f };
-        }
-    }
-
-    pm_vertexbuffer->Unmap(0 , nullptr);
-    buffer = nullptr;
 
     return true;
 }
@@ -182,10 +148,11 @@ bool DX3D12GameObject::Update()
 ///
 ///  \return true or false
 //--------------------------------------------*/
-bool DX3D12GameObject::Draw()
+bool DX3D12GameObject::Draw(DirectX::XMFLOAT3 eye , DirectX::XMFLOAT3 focus)
 {
+
     // カメラの設定
-    XMMATRIX view = XMMatrixLookAtLH({ m_eyepos.x,m_eyepos.y,m_eyepos.z } , { 0.0f,0.0f,0.0f } , { 0.0f,1.0f,0.0f });
+    XMMATRIX view = XMMatrixLookAtLH({ eye.x,eye.y,eye.z } , { focus.x,focus.y,focus.z } , { 0.0f,1.0f,0.0f });
     XMMATRIX proj = XMMatrixPerspectiveFovLH({ XMConvertToRadians(60.0f) } , 2.0f , 1.0f , 20.0f);
 
     // 変換行列
@@ -208,18 +175,19 @@ bool DX3D12GameObject::Draw()
 
     D3D12_VERTEX_BUFFER_VIEW vertex_buffer_view {};
     vertex_buffer_view.BufferLocation = pm_vertexbuffer->GetGPUVirtualAddress();
-    vertex_buffer_view.SizeInBytes = sizeof(Vertex) * 20;
+    vertex_buffer_view.SizeInBytes = sizeof(Vertex) * 36;
     vertex_buffer_view.StrideInBytes = sizeof(Vertex);
 
     // 定数バッファをシェーダーのレジスタにセット
     DX3D12::GetDX3D12CommandList()->SetGraphicsRootConstantBufferView(0 , pm_constbuffer->GetGPUVirtualAddress());
 
     // インデックスを使用しないで描画
-    DX3D12::GetDX3D12CommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+    //DX3D12::GetDX3D12CommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+    DX3D12::GetDX3D12CommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     DX3D12::GetDX3D12CommandList()->IASetVertexBuffers(0 , 1 , &vertex_buffer_view);
 
     // 描画
-    DX3D12::GetDX3D12CommandList()->DrawInstanced(24 , 1 , 0 , 0);
+    DX3D12::GetDX3D12CommandList()->DrawInstanced(36 , 1 , 0 , 0);
 
 
     return true;

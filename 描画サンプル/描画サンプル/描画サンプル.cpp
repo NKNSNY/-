@@ -8,16 +8,17 @@
 
 #include "framework.h"
 #include "描画サンプル.h"
-#include "System_DirectX3D.h"
-#include "Game_Game.h"
-#include "System_DX3D12.h"
+#include "System_Input.h"
+#include "Game_Qube.h"
 
 #define MAX_LOADSTRING 100
 
 // グローバル変数:
 HINSTANCE hInst;                                // 現在のインターフェイス
-WCHAR szTitle [MAX_LOADSTRING];                  // タイトル バーのテキスト
+WCHAR szTitle [MAX_LOADSTRING] = { L" こんにちは！ " };                  // タイトル バーのテキスト
 WCHAR szWindowClass [MAX_LOADSTRING];            // メイン ウィンドウ クラス名
+
+Qube::API api = Qube::API::OPENGL;
 
 // このコード モジュールに含まれる関数の宣言を転送します:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -36,7 +37,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance ,
     // TODO: ここにコードを挿入してください。
 
     // グローバル文字列を初期化する
-    LoadStringW(hInstance , IDS_APP_TITLE , szTitle , MAX_LOADSTRING);
+    //LoadStringW(hInstance , IDS_APP_TITLE , szTitle , MAX_LOADSTRING);
     LoadStringW(hInstance , IDC_MY , szWindowClass , MAX_LOADSTRING);
     MyRegisterClass(hInstance);
 
@@ -50,28 +51,34 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance ,
 
     MSG msg;
 
-    //Game::Initialize();
-
     // メイン メッセージ ループ:
-    while (GetMessage(&msg , nullptr , 0 , 0))
+    while (true)
     {
-        if (!TranslateAccelerator(msg.hwnd , hAccelTable , &msg))
+        if (PeekMessage(&msg , nullptr , 0 , 0 , PM_REMOVE) != 0)
         {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
+            if (msg.message == WM_QUIT)
+            {
+                break;
+            }
+            else
+            {
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);	
+            }
         }
+        else
+        {  
+            Qube::Update();
+            Qube::Draw();
 
-        // ゲームループ
-
-        DX3D12::Draw();
-
-        //Game::Update();
-       // Game::Draw();
-
+            if (InputKey::Trigger(VK_ESCAPE))
+            {
+                break;
+            }
+        }
     }
-
-    DX3D12::Finalize();
-    //Game::Finalize();
+  
+    Qube::Finalize();
 
     return (int) msg.wParam;
 }
@@ -126,9 +133,6 @@ BOOL InitInstance(HINSTANCE hInstance , int nCmdShow)
         return FALSE;
     }
 
-    //DirectX3D::Initialize(hWnd , 1000 , 500);
-    DX3D12::Initialize(hWnd , 1000 , 500);
-
     ShowWindow(hWnd , nCmdShow);
     UpdateWindow(hWnd);
 
@@ -180,6 +184,9 @@ LRESULT CALLBACK WndProc(HWND hWnd , UINT message , WPARAM wParam , LPARAM lPara
         default:
             return DefWindowProc(hWnd , message , wParam , lParam);
     }
+
+    Qube::Initialize(hWnd , api);
+
     return 0;
 }
 

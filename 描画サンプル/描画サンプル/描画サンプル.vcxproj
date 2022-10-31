@@ -139,9 +139,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Game_Camera.h" />
     <ClInclude Include="Game_DX3D12Gameobject.h" />
     <ClInclude Include="Game_GameObject.h" />
+    <ClInclude Include="Game_Qube.h" />
+    <ClInclude Include="Game_QubeStatus.h" />
     <ClInclude Include="System_DX3D12.h" />
+    <ClInclude Include="System_Input.h" />
+    <ClInclude Include="System_OpenGL.h" />
     <ClInclude Include="System_Shader.h" />
     <ClInclude Include="System_DirectX3D.h" />
     <ClInclude Include="framework.h" />
@@ -151,9 +156,13 @@
     <ClInclude Include="描画サンプル.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game_Camera.cpp" />
     <ClCompile Include="Game_DX3D12Gameobject.cpp" />
     <ClCompile Include="Game_GameObject.cpp" />
+    <ClCompile Include="Game_Qube.cpp" />
     <ClCompile Include="System_DX3D12.cpp" />
+    <ClCompile Include="System_Input.cpp" />
+    <ClCompile Include="System_OpenGL.cpp" />
     <ClCompile Include="System_Shader.cpp" />
     <ClCompile Include="System_DirectX3D.cpp" />
     <ClCompile Include="Game_Game.cpp" />
