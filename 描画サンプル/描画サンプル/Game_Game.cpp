@@ -10,7 +10,7 @@
 int Game::change_num;
 bool Game::y_change_flg;
 
-GameObject g_gameobject [1000];
+GameObject g_gameobject [100];
 
 int g_d3d_qube_num;
 
@@ -33,53 +33,79 @@ bool Game::Initialize(int qube_num , QubeStatus qube [])
 
         DirectX::XMFLOAT3 vertexlist [] =
         {
-          { -vp.x,  vp.y, -vp.z,  },  // 手前
-            {  vp.x,  vp.y, -vp.z,  },
-            {  vp.x, -vp.y, -vp.z,  },
+            // 四角形
+            { -vp.x,  vp.y, -vp.z,  },  // 手前
+              {  vp.x,  vp.y, -vp.z,  },
+              {  vp.x, -vp.y, -vp.z,  },
 
-            {    vp.x,  -vp.y,  -vp.z,  },
-            {  -vp.x,  -vp.y,  -vp.z, },
-            {  -vp.x,    vp.y,  -vp.z,  },
+              {    vp.x,  -vp.y,  -vp.z,  },
+              {  -vp.x,  -vp.y,  -vp.z, },
+              {  -vp.x,    vp.y,  -vp.z,  },
 
-            {    vp.x,    vp.y,    vp.z,  },  // 裏
-            {  -vp.x,    vp.y,    vp.z,  },
-            {  -vp.x,  -vp.y,    vp.z,  },
+              {    vp.x,    vp.y,    vp.z,  },  // 裏
+              {  -vp.x,    vp.y,    vp.z,  },
+              {  -vp.x,  -vp.y,    vp.z,  },
 
-            {  -vp.x,  -vp.y,    vp.z,  },
-            {    vp.x,  -vp.y,    vp.z,  },
-            {    vp.x,    vp.y,    vp.z,  },
+              {  -vp.x,  -vp.y,    vp.z,  },
+              {    vp.x,  -vp.y,    vp.z,  },
+              {    vp.x,    vp.y,    vp.z,  },
 
-            {    vp.x,    vp.y,  -vp.z, },  // 右
-            {    vp.x,    vp.y,    vp.z,  },
-            {    vp.x,  -vp.y,    vp.z,  },
+              {    vp.x,    vp.y,  -vp.z, },  // 右
+              {    vp.x,    vp.y,    vp.z,  },
+              {    vp.x,  -vp.y,    vp.z,  },
 
-            {    vp.x,  -vp.y,    vp.z,  },
-            {    vp.x,  -vp.y,  -vp.z,  },
-            {    vp.x,    vp.y,  -vp.z, },
+              {    vp.x,  -vp.y,    vp.z,  },
+              {    vp.x,  -vp.y,  -vp.z,  },
+              {    vp.x,    vp.y,  -vp.z, },
 
-            {  -vp.x,    vp.y,    vp.z,  },  // 左
-            {  -vp.x,    vp.y,  -vp.z, },
-            {  -vp.x,  -vp.y,  -vp.z,  },
+              {  -vp.x,    vp.y,    vp.z,  },  // 左
+              {  -vp.x,    vp.y,  -vp.z, },
+              {  -vp.x,  -vp.y,  -vp.z,  },
 
-            {  -vp.x,  -vp.y,  -vp.z,  },
-            {  -vp.x,  -vp.y,    vp.z, },
-            {  -vp.x,    vp.y,    vp.z,  },
+              {  -vp.x,  -vp.y,  -vp.z,  },
+              {  -vp.x,  -vp.y,    vp.z, },
+              {  -vp.x,    vp.y,    vp.z,  },
 
-            {  -vp.x,    vp.y,    vp.z,  },  // 上
-            {    vp.x,    vp.y,    vp.z, },
-            {    vp.x,    vp.y,  -vp.z,  },
+              {  -vp.x,    vp.y,    vp.z,  },  // 上
+              {    vp.x,    vp.y,    vp.z, },
+              {    vp.x,    vp.y,  -vp.z,  },
 
-            {    vp.x,    vp.y,  -vp.z,  },
-            {  -vp.x,    vp.y,  -vp.z, },
-            {  -vp.x,    vp.y,    vp.z,  },
+              {    vp.x,    vp.y,  -vp.z,  },
+              {  -vp.x,    vp.y,  -vp.z, },
+              {  -vp.x,    vp.y,    vp.z,  },
 
-            {  -vp.x,  -vp.y,  -vp.z,  },  // 下
-            {    vp.x,  -vp.y,  -vp.z, },
-            {    vp.x,  -vp.y,    vp.z,  },
+              {  -vp.x,  -vp.y,  -vp.z,  },  // 下
+              {    vp.x,  -vp.y,  -vp.z, },
+              {    vp.x,  -vp.y,    vp.z,  },
 
-            {    vp.x,  -vp.y,    vp.z,  },
-            {  -vp.x,  -vp.y,    vp.z, },
-            {  -vp.x,  -vp.y,  -vp.z,  },
+              {    vp.x,  -vp.y,    vp.z,  },
+              {  -vp.x,  -vp.y,    vp.z, },
+              {  -vp.x,  -vp.y,  -vp.z,  },
+
+              // 三角形
+              //{   vp.x - vp.x,        vp.y,             vp.z - vp.z},     // 手前
+              //{   vp.x,                -vp.y,           -vp.z},
+              //{ -vp.x,                -vp.y,           -vp.z},
+
+              //{   vp.x - vp.x,        vp.y,             vp.z - vp.z},    // 後ろ
+              //{ -vp.x,                -vp.y,             vp.z},
+              //{   vp.x,                -vp.y,             vp.z},
+
+              //{   vp.x - vp.x,         vp.y,             vp.z - vp.z},  // 右
+              //{   vp.x,                -vp.y,             vp.z},
+              //{   vp.x,                -vp.y,           -vp.z},
+
+              //{   vp.x - vp.x,        vp.y,              vp.z - vp.z},  // 左
+              //{ -vp.x,               -vp.y,             -vp.z},
+              //{ -vp.x,               -vp.y,               vp.z},
+
+              //{  -vp.x,  -vp.y,  -vp.z,  },  // 下
+              //{    vp.x,  -vp.y,  -vp.z, },
+              //{    vp.x,  -vp.y,    vp.z,  },
+
+              //{    vp.x,  -vp.y,    vp.z,  },
+              //{  -vp.x,  -vp.y,    vp.z, },
+              //{  -vp.x,  -vp.y,  -vp.z,  },
 
         };
 

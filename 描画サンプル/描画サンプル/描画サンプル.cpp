@@ -18,7 +18,7 @@ HINSTANCE hInst;                                // 現在のインターフェ�
 WCHAR szTitle [MAX_LOADSTRING] = { L" こんにちは！ " };                  // タイトル バーのテキスト
 WCHAR szWindowClass [MAX_LOADSTRING];            // メイン ウィンドウ クラス名
 
-Qube::API api = Qube::API::OPENGL;
+Qube::API api = Qube::API::DIRECTX11;
 
 // このコード モジュールに含まれる関数の宣言を転送します:
 ATOM                MyRegisterClass(HINSTANCE hInstance);

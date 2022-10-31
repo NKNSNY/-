@@ -30,7 +30,7 @@ D3D12_VIEWPORT DX3D12::m_viewport;
 XMFLOAT3 DX3D12::sm_eyepos;
 XMFLOAT3 DX3D12::sm_focuspos;
 
-DX3D12GameObject g_gameobject [1000];
+DX3D12GameObject g_gameobject [100];
 
 int g_d3d12_qube_num;
 
